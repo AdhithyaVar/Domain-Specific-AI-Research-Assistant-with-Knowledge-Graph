@@ -1,0 +1,42 @@
+# requirements.txt
+# ─────────────────────────────────────────────────────────────────────────────
+#  Install: pip install -r requirements.txt
+#  Python : 3.10 or 3.11 recommended (NOT 3.14 — Pydantic v1 incompatibility)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── UI ────────────────────────────────────────────────────────────────────────
+streamlit>=1.35.0
+
+# ── PDF Parsing ───────────────────────────────────────────────────────────────
+pymupdf>=1.24.0
+
+# ── Embeddings & Retrieval ────────────────────────────────────────────────────
+sentence-transformers>=3.0.0
+chromadb>=0.5.0
+rank-bm25>=0.2.2
+
+# ── LangChain (new modular structure — langchain.schema removed in 0.2+) ──────
+langchain>=0.2.0
+langchain-core>=0.2.0          # HumanMessage, SystemMessage live here now
+langchain-ollama>=0.1.0
+langchain-community>=0.2.0
+
+# ── Ollama client ─────────────────────────────────────────────────────────────
+ollama>=0.2.0
+
+# ── NLI / Hallucination Detection / Reranking ─────────────────────────────────
+# cross-encoder/nli-MiniLM2-L6-H768 (NLI) and cross-encoder/ms-marco-MiniLM-L-6-v2
+# (reranker, audit FIX #4) both loaded via sentence-transformers CrossEncoder.
+# AutoTokenizer (transformers) also used by chunker.py for real subword token
+# counting (audit FIX #3) — no separate pipeline() needed for either.
+transformers>=4.40.0
+torch>=2.2.0
+
+# ── Knowledge Graph ───────────────────────────────────────────────────────────
+networkx>=3.3
+pyvis>=0.3.2
+
+# ── Utilities ─────────────────────────────────────────────────────────────────
+numpy>=1.26.0
+pandas>=2.2.0
+tqdm>=4.66.0

@@ -1,0 +1,34 @@
+# .streamlit/config.toml
+#
+# Suppresses the noisy "Examining the path of transformers.models.*"
+# ModuleNotFoundError spam in the terminal.
+#
+# ROOT CAUSE: Streamlit's hot-reload watcher (local_sources_watcher.py) walks
+# every submodule of any package your app imports, checking `hasattr(m,
+# "__path__")` to build its list of files to watch for changes. `transformers`
+# contains ~80 vision-model image processors that lazily import `torchvision`
+# at module level. Since torchvision isn't installed (correctly — this project
+# is text-only RAG, no image models), each one raises ModuleNotFoundError
+# individually. Streamlit catches every single one and logs it. None of this
+# ever touches your actual app code — it's pure noise from the watcher setup.
+#
+# FIX: fileWatcherType = "none" skips watcher setup entirely, which is the
+# only setting that stops this scan (poll/watchdog still build the same
+# module-path list, just watch it differently — they don't avoid the scan).
+#
+# TRADE-OFF: with watching disabled, editing .py files while `streamlit run`
+# is active will NOT auto-refresh the browser. After editing a file, either:
+#   (a) press "R" in the terminal where streamlit is running, then refresh
+#       the browser manually, or
+#   (b) just stop (Ctrl+C) and re-run `streamlit run app.py`
+# For a small local project like this, manually restarting after edits is a
+# minor inconvenience and a fair trade for a clean terminal.
+
+[server]
+fileWatcherType = "none"
+
+[client]
+showErrorDetails = true
+
+[logger]
+level = "info"
